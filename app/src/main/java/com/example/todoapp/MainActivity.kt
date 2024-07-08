@@ -14,6 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.todoapp.ui.navigation.TodoNavHost
+import com.example.todoapp.ui.screens.home.HomeScreen
 import com.example.todoapp.ui.theme.TODOAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,13 +24,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TODOAppTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primary)
-                ) { innerPadding ->
-                    Column(modifier = Modifier.padding(innerPadding)) {
-
-                    }
-                }
+                TodoApp()
             }
         }
     }
@@ -39,5 +35,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     TODOAppTheme {
+        TodoApp()
     }
 }

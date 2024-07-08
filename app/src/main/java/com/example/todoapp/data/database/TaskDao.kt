@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TaskDao {
     //Home
-    @Query("SELECT title FROM task")
-    suspend fun getAllTasks(): Flow<List<Task>>
-    @Query("SELECT title FROM task WHERE status = :status")
-    suspend fun getAllTasksByStatus(status: String): Flow<List<Task>>
+    @Query("SELECT * FROM task")
+    fun getAllTasks(): Flow<List<Task>>
+    @Query("SELECT * FROM task WHERE status = :status")
+    fun getAllTasksByStatus(status: String): Flow<List<Task>>
 
     //Add
     @Insert(onConflict = OnConflictStrategy.IGNORE)
