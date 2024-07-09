@@ -27,6 +27,6 @@ data class Task(
     val id: Int = 0,
     val title: String,
     val description: String,
-    val status: TaskStatus,
-    val time: Long
+    val status: String,
+    val time: String
 )

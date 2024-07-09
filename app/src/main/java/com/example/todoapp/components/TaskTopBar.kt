@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.ui.theme.MainBackgroundColor
 import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.TODOAppTheme
 import com.example.todoapp.ui.theme.Typography
@@ -28,7 +29,7 @@ fun TaskTopBar(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().background(MainBackgroundColor)
     ) {
         Text(
             text = "Close",

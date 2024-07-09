@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.todoapp.ui.theme.MainBackgroundColor
 import com.example.todoapp.ui.theme.MainBlueColor
 
 @Composable
@@ -26,6 +27,7 @@ fun BottomButton(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .background(MainBackgroundColor)
             .padding(8.dp)
     ) {
         Button(

@@ -11,29 +11,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.todoapp.data.database.TaskRepository
+import com.example.todoapp.ui.screens.newTask.NewViewModel
 import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.SecondaryBlueColor
 
 @Composable
-fun NewButton(text: String, onClick: () -> Unit) {
+fun NewButton(text: String, onClick: () -> Unit, button: NewViewModel.ButtonDetails) {
     Button(
         onClick = onClick,
-        contentPadding = PaddingValues(horizontal = 10.dp),
+        contentPadding = PaddingValues(horizontal = 14.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = SecondaryBlueColor,
-            contentColor = MainBlueColor
+            containerColor = button.background,
+            contentColor = button.contentColor
         ),
         modifier = Modifier.height(28.dp)
     ) {
         Text(
             text = text,
-            fontSize = 12.sp
+            fontSize = 14.sp
         )
     }
-}
-
-@Preview
-@Composable
-fun NewButtonPreview() {
-    NewButton(text = "PENDENTE", onClick = {})
 }

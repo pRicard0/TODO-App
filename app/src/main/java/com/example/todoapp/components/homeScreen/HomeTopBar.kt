@@ -1,5 +1,6 @@
 package com.example.todoapp.components.homeScreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
+import com.example.todoapp.ui.theme.MainBackgroundColor
 import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.TODOAppTheme
 import com.example.todoapp.ui.theme.Typography
@@ -29,11 +31,13 @@ fun HomeTopBar() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
+            .background(MainBackgroundColor)
+            .padding(vertical = 8.dp)
     ) {
         Switch(
             checked = false,
             onCheckedChange = {},
-            modifier = Modifier.height(8.dp)
+            modifier = Modifier.height(8.dp).background(MainBackgroundColor)
         )
         Text(
             text = "Projeto",
@@ -45,7 +49,8 @@ fun HomeTopBar() {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = "Search",
-                tint = MainBlueColor
+                tint = MainBlueColor,
+                modifier = Modifier.background(MainBackgroundColor)
             )
         }
     }
@@ -56,7 +61,8 @@ fun HomeTopBar() {
 fun HomeTopBarPreview() {
     TODOAppTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize()
+                .background(MainBackgroundColor),
         ) {
 
         }
