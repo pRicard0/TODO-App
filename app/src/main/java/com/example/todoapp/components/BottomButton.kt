@@ -29,7 +29,7 @@ fun BottomButton(
             .padding(8.dp)
     ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = onClick,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainBlueColor
             ),
@@ -43,7 +43,6 @@ fun BottomButton(
             )
         }
     }
-
 }
 
 @Preview
@@ -51,6 +50,6 @@ fun BottomButton(
 fun BottomButtonPreview() {
     BottomButton(
         text = "Add Task",
-        onClick = {}
+        onClick = {},
     )
 }
