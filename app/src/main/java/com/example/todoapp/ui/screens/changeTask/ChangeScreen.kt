@@ -51,7 +51,7 @@ fun ChangeScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         topBar = {
-            TaskTopBar(onCloseClick = onCloseClick)
+            TaskTopBar(onCloseClick = onCloseClick, text = "Change Task")
         },
         bottomBar = {
             BottomButton(

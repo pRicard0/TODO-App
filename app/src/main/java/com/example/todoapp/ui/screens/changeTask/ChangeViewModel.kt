@@ -1,6 +1,7 @@
 package com.example.todoapp.ui.screens.changeTask
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -71,7 +72,6 @@ class ChangeViewModel(private val taskRepository: TaskRepository, savedStateHand
     suspend fun updateTask() {
         if (validateInput()) {
             taskRepository.updateTask(taskUiState.taskDetails.toTask())
-        } else {
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.todoapp.ui.screens.home
 
 import android.util.Log
 import androidx.compose.foundation.text2.input.TextFieldState.Saver.save
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,6 +17,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
+    private val _option = mutableStateOf("TO DO")
+    val option: MutableState<String> = _option
+
+
+
     data class HomeUiState(val taskList: List<Task> = listOf())
     val homeUiState: StateFlow<HomeUiState> = taskRepository.getAllTasksStream().map { HomeUiState(it) }
         .stateIn(
@@ -35,6 +41,10 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         } else {
             taskExtended = index
         }
+    }
+
+    fun setOption(option: String) {
+        _option.value = option
     }
 
     suspend fun deleteTask(id: Int) {

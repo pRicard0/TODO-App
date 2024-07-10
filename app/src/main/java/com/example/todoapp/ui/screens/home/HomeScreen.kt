@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.components.BottomButton
+import com.example.todoapp.components.homeScreen.CustomToggle
 import com.example.todoapp.components.homeScreen.HomeTopBar
 import com.example.todoapp.components.homeScreen.TaskList
 import com.example.todoapp.data.database.TaskRepository
@@ -66,11 +67,23 @@ fun HomeScreen(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ) {
-                TaskList(
-                    homeUiState = homeUiState,
-                    viewModel = viewModel,
-                    onChangeClick = onChangeClick
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(vertical = 12.dp)
+                ) {
+                    CustomToggle(
+                        viewModel = viewModel,
+                        options = listOf("TO DO", "PROGRESS", "DONE"),
+                        onOptionSelect = { newOption ->
+                            viewModel.setOption(newOption)
+                        }
+                    )
+                    TaskList(
+                        homeUiState = homeUiState,
+                        viewModel = viewModel,
+                        onChangeClick = onChangeClick
+                    )
+                }
             }
         }
     }

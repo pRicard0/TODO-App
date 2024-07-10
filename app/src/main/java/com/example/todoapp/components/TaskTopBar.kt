@@ -25,7 +25,8 @@ import com.example.todoapp.ui.theme.Typography
 
 @Composable
 fun TaskTopBar(
-    onCloseClick: () -> Unit
+    onCloseClick: () -> Unit,
+    text: String,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -40,7 +41,7 @@ fun TaskTopBar(
             modifier = Modifier.clickable { onCloseClick() }
         )
         Text(
-            text = "New Task",
+            text = text,
             style = Typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -60,7 +61,7 @@ fun TaskTopBarPreview() {
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)) {
-            TaskTopBar(onCloseClick = {})
+            TaskTopBar(onCloseClick = {}, text = "New Task")
         }
     }
 }
