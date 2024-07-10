@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -31,17 +32,18 @@ fun HomeTopBar() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
-            .background(MainBackgroundColor)
+            .background(MaterialTheme.colorScheme.background)
             .padding(vertical = 8.dp)
     ) {
         Switch(
             checked = false,
             onCheckedChange = {},
-            modifier = Modifier.height(8.dp).background(MainBackgroundColor)
+            modifier = Modifier.height(8.dp).background(MaterialTheme.colorScheme.background)
         )
         Text(
             text = "Projeto",
-            style = Typography.headlineSmall
+            style = Typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface
         )
         Box(
             modifier = Modifier.clickable { }
@@ -49,8 +51,8 @@ fun HomeTopBar() {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = "Search",
-                tint = MainBlueColor,
-                modifier = Modifier.background(MainBackgroundColor)
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
             )
         }
     }
@@ -62,7 +64,7 @@ fun HomeTopBarPreview() {
     TODOAppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
-                .background(MainBackgroundColor),
+                .background(MaterialTheme.colorScheme.background),
         ) {
 
         }

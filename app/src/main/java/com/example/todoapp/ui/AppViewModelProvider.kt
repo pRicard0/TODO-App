@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.todoapp.TodoApplication
+import com.example.todoapp.ui.screens.changeTask.ChangeViewModel
 import com.example.todoapp.ui.screens.home.HomeViewModel
 import com.example.todoapp.ui.screens.newTask.NewViewModel
 
@@ -20,6 +21,13 @@ object AppViewModelProvider {
         initializer {
             NewViewModel(
                 todoApplication().container.taskRepository
+            )
+        }
+
+        initializer {
+            ChangeViewModel(
+                todoApplication().container.taskRepository,
+                this.createSavedStateHandle()
             )
         }
     }

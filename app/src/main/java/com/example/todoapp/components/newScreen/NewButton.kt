@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,13 +18,13 @@ import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.SecondaryBlueColor
 
 @Composable
-fun NewButton(text: String, onClick: () -> Unit, button: NewViewModel.ButtonDetails) {
+fun NewButton(text: String, onClick: () -> Unit, containerColor: Color, contentColor: Color) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(horizontal = 14.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = button.background,
-            contentColor = button.contentColor
+            containerColor = containerColor,
+            contentColor = contentColor
         ),
         modifier = Modifier.height(28.dp)
     ) {

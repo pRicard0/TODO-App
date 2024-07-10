@@ -14,13 +14,15 @@ interface TaskDao {
     fun getAllTasks(): Flow<List<Task>>
     @Query("SELECT * FROM task WHERE status = :status")
     fun getAllTasksByStatus(status: String): Flow<List<Task>>
+    @Query("SELECT * FROM task WHERE id = :id")
+    fun getTaskById(id: Int): Flow<Task>
 
     //Add
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTask(task: Task)
 
     //Edit
-    @Update(onConflict = OnConflictStrategy.IGNORE)
+    @Update
     suspend fun updateTask(task: Task)
 
     //Delete

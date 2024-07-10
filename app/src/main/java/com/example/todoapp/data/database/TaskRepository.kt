@@ -7,6 +7,8 @@ interface TaskRepository {
 
     fun getAllTasksByStatus(status: String): Flow<List<Task>>
 
+    fun getTaskByIdStream(id: Int): Flow<Task>
+
     suspend fun insertTask(task: Task)
 
     suspend fun updateTask(task: Task)

@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.screens.newTask
+package com.example.todoapp.ui.screens.changeTask
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.components.BottomButton
@@ -28,21 +27,22 @@ import com.example.todoapp.components.TaskTopBar
 import com.example.todoapp.components.newScreen.NewButton
 import com.example.todoapp.ui.AppViewModelProvider
 import com.example.todoapp.ui.navigation.NavigationDestination
-import com.example.todoapp.ui.theme.BlackParagraphColor
-import com.example.todoapp.ui.theme.MainBackgroundColor
-import com.example.todoapp.ui.theme.SpacerColor
+import com.example.todoapp.ui.screens.newTask.NewForm
+import com.example.todoapp.ui.screens.newTask.NewViewModel
 import com.example.todoapp.ui.theme.TODOAppTheme
 import kotlinx.coroutines.launch
 
-object NewDestination: NavigationDestination {
-    override val route = "new"
-    override val title = "New Task"
+object ChangeDestination: NavigationDestination {
+    override val route = "change"
+    override val title = "Change Task"
+    const val taskIdArg = "taskId"
+    val routeWithArgs = "$route/{$taskIdArg}"
 }
 
 @Composable
-fun NewScreen(
+fun ChangeScreen(
     onCloseClick: () -> Unit,
-    viewModel: NewViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: ChangeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -51,14 +51,14 @@ fun NewScreen(
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         topBar = {
-           TaskTopBar(onCloseClick = onCloseClick)
+            TaskTopBar(onCloseClick = onCloseClick)
         },
         bottomBar = {
             BottomButton(
-                text = "Criar",
+                text = "Alterar",
                 onClick = {
                     coroutineScope.launch {
-                        viewModel.insertTask()
+                        viewModel.updateTask()
                         onCloseClick()
                     }
                 }
@@ -70,7 +70,7 @@ fun NewScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            NewForm(
+            ChangeForm(
                 taskDetails = viewModel.taskUiState.taskDetails,
                 onValueChange = viewModel::updateUiState,
                 viewModel = viewModel
@@ -80,10 +80,10 @@ fun NewScreen(
 }
 
 @Composable
-fun NewForm(
-    taskDetails: NewViewModel.TaskDetails,
-    onValueChange: (NewViewModel.TaskDetails) -> Unit,
-    viewModel: NewViewModel
+fun ChangeForm(
+    taskDetails: ChangeViewModel.TaskDetails,
+    onValueChange: (ChangeViewModel.TaskDetails) -> Unit,
+    viewModel: ChangeViewModel
 ) {
     TODOAppTheme {
         Column(
@@ -172,13 +172,5 @@ fun NewForm(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .fillMaxWidth())
         }
-    }
-}
-
-@Preview
-@Composable
-fun NewScreenPreview() {
-    TODOAppTheme {
-        NewScreen(onCloseClick = {})
     }
 }

@@ -27,8 +27,6 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
 
     data class ButtonDetails(
         var text: String,
-        var background: Color = SecondaryBlueColor,
-        var contentColor: Color = MainBlueColor
     )
 
     fun TaskDetails.toTask() = Task(
@@ -37,9 +35,17 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         status = status,
         time = time
     )
+    fun Task.toTaskDetails(): TaskDetails = TaskDetails(
+        title = title,
+        description = description,
+        status = status,
+        time = time
+    )
 
     var taskUiState by mutableStateOf(TaskUiState())
         private set
+
+    var activeButton by mutableStateOf<Int?>(null)
 
     var buttonList: Array<ButtonDetails> = arrayOf(
         ButtonDetails(text = "TO DO"),
@@ -64,16 +70,8 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         }
     }
 
-    fun changeButtonUi(index: Int) {
-        for (i in buttonList.indices) {
-            if (i == index) {
-                buttonList[i].background = MainBlueColor
-                buttonList[i].contentColor = Color.White
-            } else {
-                buttonList[i].background = SecondaryBlueColor
-                buttonList[i].contentColor = MainBlueColor
-            }
-        }
+    fun setActiveButton(index: Int) {
+        activeButton = index
     }
 }
 

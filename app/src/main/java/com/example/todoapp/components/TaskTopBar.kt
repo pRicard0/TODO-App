@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,24 +30,25 @@ fun TaskTopBar(
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().background(MainBackgroundColor)
+        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
     ) {
         Text(
             text = "Close",
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = MainBlueColor,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable { onCloseClick() }
         )
         Text(
             text = "New Task",
-            style = Typography.headlineSmall
+            style = Typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onSurface
         )
         Text(
             text = "Clear",
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = MainBlueColor
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

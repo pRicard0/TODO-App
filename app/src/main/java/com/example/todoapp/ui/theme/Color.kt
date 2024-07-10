@@ -9,14 +9,18 @@ val ParagraphColor = Color(0xFF71727A)
 val SwitchBackgroundColor = Color(0xFFF8F9FE)
 val MainBackgroundColor = Color(0xFFFFFFFF)
 val SpacerColor = Color(0xFFD4D6DD)
+val onMainBlueColor = Color(0xFFFFFFFF)
+val DeleteButton = Color(0xFFFD0000)
 
-val DarkMainBlueColor = Color(0xFF82B1FF) // Lighter version of MainBlueColor for dark background
-val DarkSecondaryBlueColor = Color(0xFF1A3D5D) // Darker blue for background elements
-val DarkBlackParagraphColor = Color(0xFFE1E1E1) // Light color for dark paragraphs
+val DarkMainBlueColor = Color(0xFF006FFD) // Lighter version of MainBlueColor for dark background
+val DarkSecondaryBlueColor = Color(0xFF14233C) // Darker blue for background elements
+val DarkBlackParagraphColor = Color(0xFFFFFFFF) // Light color for dark paragraphs
 val DarkParagraphColor = Color(0xFFB0B0B0) // Lighter version of ParagraphColor
 val DarkSwitchBackgroundColor = Color(0xFF323639) // Darker background for switch
 val DarkMainBackgroundColor = Color(0xFF121212)
-val DarkSpacerColor = Color(0xFFD4D6DD)
+val DarkSpacerColor = Color(0xFF50565A)
+val DarkOnMainBlueColor = Color(0xFFFFFFFF)
+val DarkDeleteButton = Color(0xFFFD0000)
 
 
 

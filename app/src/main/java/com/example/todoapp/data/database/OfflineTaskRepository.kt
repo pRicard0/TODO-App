@@ -7,6 +7,8 @@ class OfflineTaskRepository(private val taskDao: TaskDao): TaskRepository {
 
     override fun getAllTasksByStatus(status: String): Flow<List<Task>> = taskDao.getAllTasksByStatus(status)
 
+    override fun getTaskByIdStream(id: Int): Flow<Task> = taskDao.getTaskById(id)
+
     override suspend fun insertTask(task: Task) = taskDao.insertTask(task)
 
     override suspend fun updateTask(task: Task) = taskDao.updateTask(task)

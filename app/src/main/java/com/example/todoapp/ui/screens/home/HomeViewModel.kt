@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class HomeViewModel(taskRepository: TaskRepository) : ViewModel() {
+class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     data class HomeUiState(val taskList: List<Task> = listOf())
     val homeUiState: StateFlow<HomeUiState> = taskRepository.getAllTasksStream().map { HomeUiState(it) }
         .stateIn(
@@ -29,7 +30,14 @@ class HomeViewModel(taskRepository: TaskRepository) : ViewModel() {
     var taskExtended by mutableStateOf<Int?>(null)
 
     fun showExtended(index: Int) {
-        Log.d("HomeViewModel", "showExtended: $index")
-        taskExtended = index
+        if (taskExtended == index) {
+            taskExtended = null
+        } else {
+            taskExtended = index
+        }
+    }
+
+    suspend fun deleteTask(id: Int) {
+        taskRepository.deleteTask(id)
     }
 }

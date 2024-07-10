@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.components.BottomButton
 import com.example.todoapp.components.homeScreen.HomeTopBar
 import com.example.todoapp.components.homeScreen.TaskList
+import com.example.todoapp.data.database.TaskRepository
 import com.example.todoapp.ui.AppViewModelProvider
 import com.example.todoapp.ui.navigation.NavigationDestination
 import com.example.todoapp.ui.theme.MainBackgroundColor
@@ -39,31 +40,38 @@ object HomeDestination: NavigationDestination {
 @Composable
 fun HomeScreen(
     onCreateClick: () -> Unit,
+    onChangeClick: (Int) -> Unit,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .background(MainBackgroundColor),
-        topBar = {
-            HomeTopBar()
-        },
-        bottomBar = {
-            BottomButton(
-                text = "Add Task",
-                onClick = { onCreateClick() },
-            )
-        }
-    ) { innerPadding ->
-        Box(
+    TODOAppTheme {
+        Scaffold(
             modifier = Modifier
-                .padding(innerPadding)
                 .fillMaxSize()
-                .background(MainBackgroundColor)
-        ) {
-            TaskList(homeUiState = homeUiState, viewModel = viewModel)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp),
+            topBar = {
+                HomeTopBar()
+            },
+            bottomBar = {
+                BottomButton(
+                    text = "Add Task",
+                    onClick = { onCreateClick() },
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                TaskList(
+                    homeUiState = homeUiState,
+                    viewModel = viewModel,
+                    onChangeClick = onChangeClick
+                )
+            }
         }
     }
 }
@@ -72,6 +80,6 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     TODOAppTheme {
-        HomeScreen(onCreateClick = {})
+        HomeScreen(onCreateClick = {}, onChangeClick = {})
     }
 }
