@@ -2,6 +2,7 @@ package com.example.todoapp.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -10,7 +11,13 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.todoapp.ui.screens.Theme
+import com.example.todoapp.ui.screens.ThemeViewModel
 
 private val DarkColorScheme = darkColorScheme(
     primary = DarkMainBlueColor,
@@ -44,14 +51,14 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun TODOAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeViewModel: ThemeViewModel = viewModel(),
     content: @Composable () -> Unit
 ) {
-
-    val colors = if (!darkTheme) {
-        LightColorScheme
-    } else {
-        DarkColorScheme
+    val theme by themeViewModel.theme.observeAsState(Theme.AUTO)
+    val colors = when (theme) {
+        Theme.DARK -> DarkColorScheme
+        Theme.LIGHT -> LightColorScheme
+        Theme.AUTO -> if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme
     }
 
     MaterialTheme(

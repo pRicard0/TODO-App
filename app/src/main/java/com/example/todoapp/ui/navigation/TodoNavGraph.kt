@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.todoapp.ui.screens.ThemeViewModel
 import com.example.todoapp.ui.screens.changeTask.ChangeDestination
 import com.example.todoapp.ui.screens.changeTask.ChangeScreen
 import com.example.todoapp.ui.screens.home.HomeDestination
@@ -17,6 +18,7 @@ import com.example.todoapp.ui.screens.newTask.NewScreen
 @Composable
 fun TodoNavHost(
     navController: NavHostController,
+    themeViewModel: ThemeViewModel,
     modifier: Modifier = Modifier
 ) {
     NavHost(
@@ -27,13 +29,15 @@ fun TodoNavHost(
         composable(route = HomeDestination.route) {
             HomeScreen(
                 onCreateClick = { navController.navigate(NewDestination.route) },
-                onChangeClick = { navController.navigate("${ChangeDestination.route}/$it")}
+                onChangeClick = { navController.navigate("${ChangeDestination.route}/$it") },
+                themeViewModel = themeViewModel
             )
         }
 
         composable(route = NewDestination.route) {
             NewScreen(
-                onCloseClick = { navController.navigate(HomeDestination.route) }
+                onCloseClick = { navController.navigate(HomeDestination.route) },
+                themeViewModel = themeViewModel
             )
         }
 
@@ -44,7 +48,8 @@ fun TodoNavHost(
             })
         ) {
             ChangeScreen(
-                onCloseClick = { navController.navigate(HomeDestination.route) }
+                onCloseClick = { navController.navigate(HomeDestination.route) },
+                themeViewModel = themeViewModel
             )
         }
     }

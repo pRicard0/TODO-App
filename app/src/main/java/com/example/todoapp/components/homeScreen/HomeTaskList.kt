@@ -20,6 +20,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,31 +46,31 @@ import java.util.Locale
 
 @Composable
 fun TaskList(
-    homeUiState: HomeViewModel.HomeUiState,
     viewModel: HomeViewModel,
     onChangeClick: (Int) -> Unit
 ) {
+    val homeUiState = viewModel.homeUiState.collectAsState()
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
     ) {
-        items(homeUiState.taskList.size) { taskIndex ->
+        items(homeUiState.value.taskList.size) { taskIndex ->
             if (viewModel.taskExtended == taskIndex) {
                 CardExtended(
-                    title = homeUiState.taskList[taskIndex].title,
-                    description = homeUiState.taskList[taskIndex].description,
-                    status = homeUiState.taskList[taskIndex].status,
-                    time = homeUiState.taskList[taskIndex].time,
+                    title = homeUiState.value.taskList[taskIndex].title,
+                    description = homeUiState.value.taskList[taskIndex].description,
+                    status = homeUiState.value.taskList[taskIndex].status,
+                    time = homeUiState.value.taskList[taskIndex].time,
                     onClick = { viewModel.showExtended(taskIndex) },
-                    id = homeUiState.taskList[taskIndex].id,
+                    id = homeUiState.value.taskList[taskIndex].id,
                     onChangeClick = onChangeClick,
                     viewModel = viewModel
                 )
             } else {
                 CardMinimized(
-                    title = homeUiState.taskList[taskIndex].title,
+                    title = homeUiState.value.taskList[taskIndex].title,
                     onClick = { viewModel.showExtended(taskIndex) }
                 )
             }

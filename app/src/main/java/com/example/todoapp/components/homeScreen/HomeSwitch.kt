@@ -1,5 +1,6 @@
 package com.example.todoapp.components.homeScreen
 
+import android.util.Log
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -64,12 +65,12 @@ fun CustomToggle(
                         .clickable(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() })
-                        {onOptionSelect(option) },
+                        {onOptionSelect(option)},
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = option,
-                        color = if(index == state.selectedIndex.toInt()) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground,
+                        color = if(index == state.selectedIndex.toInt()) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )

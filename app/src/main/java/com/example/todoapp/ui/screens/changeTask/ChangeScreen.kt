@@ -27,6 +27,7 @@ import com.example.todoapp.components.TaskTopBar
 import com.example.todoapp.components.newScreen.NewButton
 import com.example.todoapp.ui.AppViewModelProvider
 import com.example.todoapp.ui.navigation.NavigationDestination
+import com.example.todoapp.ui.screens.ThemeViewModel
 import com.example.todoapp.ui.screens.newTask.NewForm
 import com.example.todoapp.ui.screens.newTask.NewViewModel
 import com.example.todoapp.ui.theme.TODOAppTheme
@@ -42,39 +43,42 @@ object ChangeDestination: NavigationDestination {
 @Composable
 fun ChangeScreen(
     onCloseClick: () -> Unit,
-    viewModel: ChangeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: ChangeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    themeViewModel: ThemeViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp),
-        topBar = {
-            TaskTopBar(onCloseClick = onCloseClick, text = "Change Task")
-        },
-        bottomBar = {
-            BottomButton(
-                text = "Alterar",
-                onClick = {
-                    coroutineScope.launch {
-                        viewModel.updateTask()
-                        onCloseClick()
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
-        Surface(
+    TODOAppTheme(themeViewModel = themeViewModel) {
+        Scaffold(
             modifier = Modifier
-                .padding(innerPadding)
                 .fillMaxSize()
-        ) {
-            ChangeForm(
-                taskDetails = viewModel.taskUiState.taskDetails,
-                onValueChange = viewModel::updateUiState,
-                viewModel = viewModel
-            )
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 16.dp, vertical = 24.dp),
+            topBar = {
+                TaskTopBar(onCloseClick = onCloseClick, text = "Change Task")
+            },
+            bottomBar = {
+                BottomButton(
+                    text = "Alterar",
+                    onClick = {
+                        coroutineScope.launch {
+                            viewModel.updateTask()
+                            onCloseClick()
+                        }
+                    }
+                )
+            }
+        ) { innerPadding ->
+            Surface(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+            ) {
+                ChangeForm(
+                    taskDetails = viewModel.taskUiState.taskDetails,
+                    onValueChange = viewModel::updateUiState,
+                    viewModel = viewModel
+                )
+            }
         }
     }
 }
@@ -85,92 +89,91 @@ fun ChangeForm(
     onValueChange: (ChangeViewModel.TaskDetails) -> Unit,
     viewModel: ChangeViewModel
 ) {
-    TODOAppTheme {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        OutlinedTextField(
+            value = taskDetails.title,
+            onValueChange = { onValueChange(taskDetails.copy(title = it)); Log.d("NewScreen", "Title input = $it")},
+            label = { Text("Title", color = MaterialTheme.colorScheme.onSurface) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent
+            ),
+        )
+        Spacer(modifier = Modifier
+            .height(1.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxWidth())
+        OutlinedTextField(
+            value = taskDetails.description,
+            onValueChange = { onValueChange(taskDetails.copy(description = it))},
+            label = { Text("Description", color = MaterialTheme.colorScheme.onSurface) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent
+            ),
+        )
+        Spacer(modifier = Modifier
+            .height(1.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxWidth())
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.background)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(vertical = 20.dp, horizontal = 16.dp)
         ) {
-            OutlinedTextField(
-                value = taskDetails.title,
-                onValueChange = { onValueChange(taskDetails.copy(title = it)); Log.d("NewScreen", "Title input = $it")},
-                label = { Text("Title", color = MaterialTheme.colorScheme.onSurface) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
+            Text(
+                text = "Status",
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxWidth())
-            OutlinedTextField(
-                value = taskDetails.description,
-                onValueChange = { onValueChange(taskDetails.copy(description = it))},
-                label = { Text("Description", color = MaterialTheme.colorScheme.onSurface) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-            )
-            Spacer(modifier = Modifier
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxWidth())
-            Column(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.padding(vertical = 20.dp, horizontal = 16.dp)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = "Status",
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    viewModel.buttonList.forEachIndexed { index, button ->
-                        if ( index == viewModel.activeButton) {
-                            NewButton(
-                                text = button.text,
-                                onClick = {
-                                    onValueChange(taskDetails.copy(status = button.text))
-                                },
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            )
-                        } else {
-                            NewButton(
-                                text = button.text,
-                                onClick = {
-                                    viewModel.setActiveButton(index)
-                                    onValueChange(taskDetails.copy(status = button.text))
-                                    Log.d("NewScreen", "Status input = ${button.text}")
-                                },
-                                containerColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.onSecondary
-                            )
-                        }
+                viewModel.buttonList.forEachIndexed { index, button ->
+                    if ( index == viewModel.activeButton) {
+                        NewButton(
+                            text = button.text,
+                            onClick = {
+                                onValueChange(taskDetails.copy(status = button.text))
+                            },
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        NewButton(
+                            text = button.text,
+                            onClick = {
+                                viewModel.setActiveButton(index)
+                                onValueChange(taskDetails.copy(status = button.text))
+                                Log.d("NewScreen", "Status input = ${button.text}")
+                            },
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary
+                        )
                     }
                 }
             }
-            Spacer(modifier = Modifier
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxWidth())
-            OutlinedTextField(
-                value = taskDetails.time,
-                onValueChange = { onValueChange(taskDetails.copy(time = it))},
-                label = { Text("Time", color = MaterialTheme.colorScheme.onSurface) },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent
-                ),
-            )
-            Spacer(modifier = Modifier
-                .height(1.dp)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .fillMaxWidth())
         }
+        Spacer(modifier = Modifier
+            .height(1.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxWidth())
+        OutlinedTextField(
+            value = taskDetails.time,
+            onValueChange = { onValueChange(taskDetails.copy(time = it))},
+            label = { Text("Time", color = MaterialTheme.colorScheme.onSurface) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent
+            ),
+        )
+        Spacer(modifier = Modifier
+            .height(1.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .fillMaxWidth())
     }
+
 }
