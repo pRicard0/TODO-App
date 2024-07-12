@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.todoapp.R
 import com.example.todoapp.ui.screens.Theme
 import com.example.todoapp.ui.screens.ThemeViewModel
+import com.example.todoapp.ui.screens.home.HomeViewModel
 import com.example.todoapp.ui.theme.MainBackgroundColor
 import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.TODOAppTheme
@@ -35,7 +38,8 @@ import com.example.todoapp.ui.theme.Typography
 
 @Composable
 fun HomeTopBar(
-    themeViewModel: ThemeViewModel
+    themeViewModel: ThemeViewModel,
+    homeViewModel: HomeViewModel
 ) {
     val currentTheme by themeViewModel.theme.observeAsState(Theme.AUTO)
     val checkedState = when (currentTheme) {
@@ -43,41 +47,62 @@ fun HomeTopBar(
         Theme.LIGHT -> false
         else -> isSystemInDarkTheme()
     }
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(vertical = 8.dp)
-    ) {
-        Switch(
-            checked = checkedState,
-            onCheckedChange = { isChecked ->
-                Log.d("HomeTopBar", "isChecked = $isChecked. Current theme = $currentTheme")
-                val newTheme = if (isChecked) Theme.DARK else Theme.LIGHT
-                themeViewModel.onThemeChanged(newTheme)
-            },
+    if (!homeViewModel.showSearch.value) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
+                .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)
-        )
-        Text(
-            text = "Projeto",
-            style = Typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        Box(
-            modifier = Modifier.clickable { }
+                .padding(top = 12.dp, bottom = 12.dp, start = 0.dp, end = 8.dp)
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_search_24),
-                contentDescription = "Search",
-                tint = MaterialTheme.colorScheme.primary,
+            Switch(
+                checked = checkedState,
+                onCheckedChange = { isChecked ->
+                    Log.d("HomeTopBar", "isChecked = $isChecked. Current theme = $currentTheme")
+                    val newTheme = if (isChecked) Theme.DARK else Theme.LIGHT
+                    themeViewModel.onThemeChanged(newTheme)
+                },
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.background)
-                    .size(32.dp)
             )
+            Text(
+                text = "Projeto",
+                style = Typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Box(
+                modifier = Modifier.clickable { homeViewModel.showSearchField() }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = "Search",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .size(32.dp)
+                )
+            }
         }
+    } else {
+        OutlinedTextField(
+            value = homeViewModel.searchQuery.value,
+            onValueChange = {homeViewModel.onSearchValueChange(it)},
+            trailingIcon = {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_search_24),
+                    contentDescription = "Search",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .size(32.dp)
+                        .clickable { homeViewModel.hideSearchField() }
+                )
+            },
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+        )
     }
 }
 

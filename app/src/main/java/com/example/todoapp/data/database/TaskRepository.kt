@@ -9,6 +9,8 @@ interface TaskRepository {
 
     fun getTaskByIdStream(id: Int): Flow<Task>
 
+    fun getTaskBySearch(searchQuery: String): Flow<List<Task>>
+
     suspend fun insertTask(task: Task)
 
     suspend fun updateTask(task: Task)

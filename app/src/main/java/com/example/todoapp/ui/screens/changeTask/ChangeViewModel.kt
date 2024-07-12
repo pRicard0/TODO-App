@@ -63,7 +63,21 @@ class ChangeViewModel(private val taskRepository: TaskRepository, savedStateHand
             TaskUiState(taskDetails = taskDetails, isEntryValid = validateInput(taskDetails))
     }
 
-    fun validateInput(uiState: TaskDetails = taskUiState.taskDetails): Boolean {
+    fun clearUiState() {
+        val emptyTask = createEmptyTask()
+        taskUiState =
+            TaskUiState(taskDetails = emptyTask, isEntryValid = false)
+    }
+    private fun createEmptyTask(): TaskDetails{
+        return TaskDetails(
+            title = "",
+            description = "",
+            status = "",
+            time = ""
+        )
+    }
+
+    private fun validateInput(uiState: TaskDetails = taskUiState.taskDetails): Boolean {
         return with(uiState){
             title.isNotBlank() && description.isNotBlank() && status. isNotBlank() && time.isNotBlank()
         }

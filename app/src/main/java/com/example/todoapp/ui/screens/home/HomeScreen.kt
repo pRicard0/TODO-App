@@ -49,8 +49,6 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     themeViewModel: ThemeViewModel = viewModel()
 ) {
-    val homeUiState by viewModel.homeUiState.collectAsState()
-    val themeState by themeViewModel.theme.observeAsState(com.example.todoapp.ui.screens.Theme.LIGHT)
     TODOAppTheme(themeViewModel = themeViewModel) {
         Scaffold(
             modifier = Modifier
@@ -59,7 +57,8 @@ fun HomeScreen(
                 .padding(16.dp),
             topBar = {
                 HomeTopBar(
-                    themeViewModel = themeViewModel
+                    themeViewModel = themeViewModel,
+                    homeViewModel = viewModel
                 )
             },
             bottomBar = {
@@ -69,23 +68,35 @@ fun HomeScreen(
                 )
             }
         ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
+            if(!viewModel.showSearch.value) {
+                Box(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background)
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.padding(vertical = 12.dp)
+                    ) {
+                        CustomToggle(
+                            viewModel = viewModel,
+                            options = listOf("TO DO", "PROGRESS", "DONE"),
+                            onOptionSelect = { newOption ->
+                                viewModel.setOption(newOption)
+                            }
+                        )
+                        TaskList(
+                            viewModel = viewModel,
+                            onChangeClick = onChangeClick
+                        )
+                    }
+                }
+            } else {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier.padding(vertical = 12.dp)
+                    modifier = Modifier.padding(innerPadding)
                 ) {
-                    CustomToggle(
-                        viewModel = viewModel,
-                        options = listOf("TO DO", "PROGRESS", "DONE"),
-                        onOptionSelect = { newOption ->
-                            viewModel.setOption(newOption)
-                        }
-                    )
                     TaskList(
                         viewModel = viewModel,
                         onChangeClick = onChangeClick

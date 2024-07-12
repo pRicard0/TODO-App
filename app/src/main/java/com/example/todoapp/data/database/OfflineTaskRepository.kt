@@ -9,6 +9,8 @@ class OfflineTaskRepository(private val taskDao: TaskDao): TaskRepository {
 
     override fun getTaskByIdStream(id: Int): Flow<Task> = taskDao.getTaskById(id)
 
+    override fun getTaskBySearch(searchQuery: String): Flow<List<Task>> = taskDao.getTaskBySearch(searchQuery)
+
     override suspend fun insertTask(task: Task) = taskDao.insertTask(task)
 
     override suspend fun updateTask(task: Task) = taskDao.updateTask(task)
