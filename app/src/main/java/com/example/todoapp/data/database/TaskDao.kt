@@ -16,6 +16,8 @@ interface TaskDao {
     fun getAllTasksByStatus(status: String): Flow<List<Task>>
     @Query("SELECT * FROM task WHERE id = :id")
     fun getTaskById(id: Int): Flow<Task>
+    @Query("SELECT * FROM task WHERE title LIKE :query || '%'")
+    fun getTaskBySearch(query: String): Flow<List<Task>>
 
     //Add
     @Insert(onConflict = OnConflictStrategy.IGNORE)

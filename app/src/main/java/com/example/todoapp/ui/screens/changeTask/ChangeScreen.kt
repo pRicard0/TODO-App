@@ -44,7 +44,7 @@ object ChangeDestination: NavigationDestination {
 fun ChangeScreen(
     onCloseClick: () -> Unit,
     viewModel: ChangeViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    themeViewModel: ThemeViewModel
+    themeViewModel: ThemeViewModel,
 ) {
     val coroutineScope = rememberCoroutineScope()
     TODOAppTheme(themeViewModel = themeViewModel) {
@@ -54,7 +54,11 @@ fun ChangeScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             topBar = {
-                TaskTopBar(onCloseClick = onCloseClick, text = "Change Task")
+                TaskTopBar(
+                    onCloseClick = onCloseClick,
+                    text = "Change Task",
+                    onClearClick = { viewModel.clearUiState()}
+                )
             },
             bottomBar = {
                 BottomButton(

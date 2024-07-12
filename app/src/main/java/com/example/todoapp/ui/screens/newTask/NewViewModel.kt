@@ -8,9 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.todoapp.data.database.Task
 import com.example.todoapp.data.database.TaskRepository
-import com.example.todoapp.data.database.TaskStatus
-import com.example.todoapp.ui.theme.MainBlueColor
-import com.example.todoapp.ui.theme.SecondaryBlueColor
+
 
 class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     data class TaskUiState(
@@ -57,10 +55,23 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         taskUiState =
             TaskUiState(taskDetails = taskDetails, isEntryValid = validateInput(taskDetails))
     }
+    fun clearUiState() {
+        val emptyTask = createEmptyTask()
+        taskUiState =
+            TaskUiState(taskDetails = emptyTask, isEntryValid = false)
+    }
+    private fun createEmptyTask(): TaskDetails{
+        return TaskDetails(
+            title = "",
+            description = "",
+            status = "",
+            time = ""
+        )
+    }
 
     fun validateInput(uiState: TaskDetails = taskUiState.taskDetails): Boolean {
         return with(uiState){
-            title.isNotBlank() && description.isNotBlank() && status. isNotBlank() && time.isNotBlank()
+            title.isNotBlank() && description.isNotBlank() && status.isNotBlank() && time.isNotBlank()
         }
     }
 

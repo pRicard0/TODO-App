@@ -1,5 +1,6 @@
 package com.example.todoapp.components.homeScreen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -50,29 +51,54 @@ fun TaskList(
     onChangeClick: (Int) -> Unit
 ) {
     val homeUiState = viewModel.homeUiState.collectAsState()
+    val searchUiState = viewModel.searchUiState.collectAsState()
+    Log.d("HomeTask", "Size: ${searchUiState.value.taskList.size}, Search state: ${searchUiState.value}")
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
     ) {
-        items(homeUiState.value.taskList.size) { taskIndex ->
-            if (viewModel.taskExtended == taskIndex) {
-                CardExtended(
-                    title = homeUiState.value.taskList[taskIndex].title,
-                    description = homeUiState.value.taskList[taskIndex].description,
-                    status = homeUiState.value.taskList[taskIndex].status,
-                    time = homeUiState.value.taskList[taskIndex].time,
-                    onClick = { viewModel.showExtended(taskIndex) },
-                    id = homeUiState.value.taskList[taskIndex].id,
-                    onChangeClick = onChangeClick,
-                    viewModel = viewModel
-                )
-            } else {
-                CardMinimized(
-                    title = homeUiState.value.taskList[taskIndex].title,
-                    onClick = { viewModel.showExtended(taskIndex) }
-                )
+        if(!viewModel.showSearch.value) {
+            items(homeUiState.value.taskList.size) { taskIndex ->
+                if (viewModel.taskExtended == taskIndex) {
+                    CardExtended(
+                        title = homeUiState.value.taskList[taskIndex].title,
+                        description = homeUiState.value.taskList[taskIndex].description,
+                        status = homeUiState.value.taskList[taskIndex].status,
+                        time = homeUiState.value.taskList[taskIndex].time,
+                        onClick = { viewModel.showExtended(taskIndex) },
+                        id = homeUiState.value.taskList[taskIndex].id,
+                        onChangeClick = onChangeClick,
+                        viewModel = viewModel
+                    )
+                } else {
+                    CardMinimized(
+                        title = homeUiState.value.taskList[taskIndex].title,
+                        onClick = { viewModel.showExtended(taskIndex) }
+                    )
+                }
+            }
+        } else {
+            Log.d("HomeTaskLoop", "Size: ${searchUiState.value.taskList.size}, Search state: ${searchUiState.value}")
+            items(searchUiState.value.taskList.size) { taskIndex ->
+                if (viewModel.taskExtended == taskIndex) {
+                    CardExtended(
+                        title = searchUiState.value.taskList[taskIndex].title,
+                        description = searchUiState.value.taskList[taskIndex].description,
+                        status = searchUiState.value.taskList[taskIndex].status,
+                        time = searchUiState.value.taskList[taskIndex].time,
+                        onClick = { viewModel.showExtended(taskIndex) },
+                        id = searchUiState.value.taskList[taskIndex].id,
+                        onChangeClick = onChangeClick,
+                        viewModel = viewModel
+                    )
+                } else {
+                    CardMinimized(
+                        title = searchUiState.value.taskList[taskIndex].title,
+                        onClick = { viewModel.showExtended(taskIndex) }
+                    )
+                }
             }
         }
     }

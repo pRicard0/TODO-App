@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.data.database.Task
 import com.example.todoapp.data.database.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,19 +21,48 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     private val _option = mutableStateOf("TO DO")
     val option: MutableState<String> = _option
 
+    private val _showSearch = mutableStateOf(false)
+    val showSearch: MutableState<Boolean> = _showSearch
+
+    private val _searchQuery = mutableStateOf("")
+    val searchQuery: MutableState<String> = _searchQuery
+
     data class HomeUiState(val taskList: List<Task> = listOf())
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
-    }
+    private val _searchUiState = MutableStateFlow(HomeUiState())
+    val searchUiState: StateFlow<HomeUiState> = _searchUiState
+
 
     init {
         fetchTasksByStatus(option.value)
     }
 
     var taskExtended by mutableStateOf<Int?>(null)
+
+
+    fun showSearchField() {
+        _showSearch.value = true
+    }
+
+    fun hideSearchField() {
+        _showSearch.value = false
+    }
+
+    fun onSearchValueChange(text: String) {
+        _searchQuery.value = text
+        fetchTasksBySearch(text)
+    }
+
+    fun fetchTasksBySearch(text: String) {
+        viewModelScope.launch {
+            taskRepository.getTaskBySearch(text)
+                .map { HomeUiState(it) }
+                .collect { _searchUiState.value = it }
+        }
+        Log.d("HomeViewModel", "Query: $text, Size: ${searchUiState.value.taskList.size}, Search state: ${searchUiState.value}")
+    }
 
     fun showExtended(index: Int) {
         if (taskExtended == index) {
@@ -44,7 +74,6 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
 
     fun setOption(option: String) {
         _option.value = option
-        Log.d("HomeViewModel", "Option changed to $option")
         fetchTasksByStatus(option)
     }
 

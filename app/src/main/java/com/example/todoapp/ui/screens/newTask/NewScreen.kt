@@ -54,7 +54,11 @@ fun NewScreen(
                 .background(MaterialTheme.colorScheme.background)
                 .padding(horizontal = 16.dp, vertical = 24.dp),
             topBar = {
-                TaskTopBar(onCloseClick = onCloseClick, text = "New Task")
+                TaskTopBar(
+                    onCloseClick = onCloseClick,
+                    text = "New Task",
+                    onClearClick = { viewModel.clearUiState() }
+                )
             },
             bottomBar = {
                 BottomButton(

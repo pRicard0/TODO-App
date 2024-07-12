@@ -1,6 +1,7 @@
 package com.example.todoapp.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import com.example.todoapp.ui.theme.Typography
 fun TaskTopBar(
     onCloseClick: () -> Unit,
     text: String,
+    onClearClick: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -53,7 +55,8 @@ fun TaskTopBar(
             text = "Clear",
             fontSize = 14.sp,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.clickable { onClearClick() }
         )
     }
 }
@@ -65,7 +68,7 @@ fun TaskTopBarPreview() {
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)) {
-            TaskTopBar(onCloseClick = {}, text = "New Task")
+            TaskTopBar(onCloseClick = {}, text = "New Task", onClearClick = {})
         }
     }
 }
