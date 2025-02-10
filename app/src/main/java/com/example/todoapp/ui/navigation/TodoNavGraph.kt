@@ -1,5 +1,6 @@
 package com.example.todoapp.ui.navigation
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -28,17 +29,29 @@ fun TodoNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                onCreateClick = { navController.navigate(NewDestination.route) },
+                onCreateClick = { navController.navigate("${NewDestination.route}/$it")},
                 onChangeClick = { navController.navigate("${ChangeDestination.route}/$it") },
                 themeViewModel = themeViewModel
             )
         }
 
-        composable(route = NewDestination.route) {
-            NewScreen(
-                onCloseClick = { navController.navigate(HomeDestination.route) },
-                themeViewModel = themeViewModel
-            )
+        composable(
+            route = NewDestination.routeWithArgs,
+            arguments = listOf(navArgument(NewDestination.option) {
+                type = NavType.StringType
+            })
+        ) { navBackStackEntry ->
+            val option = navBackStackEntry.arguments?.getString(NewDestination.option)
+            if (option != null) {
+                NewScreen(
+                    onCloseClick = { navController.navigate(HomeDestination.route) },
+                    themeViewModel = themeViewModel,
+                    option = option
+                )
+            } else {
+                Text(text = "Erro: Argumento 'option' não encontrado.")
+
+            }
         }
 
         composable(

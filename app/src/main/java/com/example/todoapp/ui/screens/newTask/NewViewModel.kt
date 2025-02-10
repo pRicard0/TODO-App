@@ -19,13 +19,17 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     data class TaskDetails(
         var title: String = "",
         var description: String = "",
-        val status: String = "",
+        var status: String = "",
         val time: String = ""
     )
 
     data class ButtonDetails(
         var text: String,
     )
+
+    fun setStatus(status: String) {
+        taskUiState.taskDetails.status = status
+    }
 
     fun TaskDetails.toTask() = Task(
         title = title,
@@ -81,8 +85,14 @@ class NewViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         }
     }
 
-    fun setActiveButton(index: Int) {
+    fun setActiveButton(index: Int?, option: String?) {
         activeButton = index
+
+        when(option){
+            "TO DO" -> activeButton = 0
+            "PROGRESS" -> activeButton = 1
+            "DONE" -> activeButton = 2
+        }
     }
 }
 

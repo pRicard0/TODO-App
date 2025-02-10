@@ -1,21 +1,17 @@
 package com.example.todoapp.ui.screens.home
 
 import android.util.Log
-import androidx.compose.foundation.text2.input.TextFieldState.Saver.save
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.data.database.Task
 import com.example.todoapp.data.database.TaskRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
     private val _option = mutableStateOf("TO DO")
@@ -61,7 +57,6 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
                 .map { HomeUiState(it) }
                 .collect { _searchUiState.value = it }
         }
-        Log.d("HomeViewModel", "Query: $text, Size: ${searchUiState.value.taskList.size}, Search state: ${searchUiState.value}")
     }
 
     fun showExtended(index: Int) {
@@ -77,7 +72,12 @@ class HomeViewModel(private val taskRepository: TaskRepository) : ViewModel() {
         fetchTasksByStatus(option)
     }
 
+    fun getOption(): String {
+        return option.value
+    }
+
     private fun fetchTasksByStatus(status: String) {
+        Log.d("HomeViewModel", "Size: ${homeUiState.value.taskList.size}, $status")
         viewModelScope.launch {
             if(status == "PROGRESS") {
                 taskRepository.getAllTasksByStatus("IN PROGRESS")

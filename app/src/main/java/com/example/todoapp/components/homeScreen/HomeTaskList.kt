@@ -10,37 +10,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.ui.screens.home.HomeViewModel
-import com.example.todoapp.ui.theme.BlackParagraphColor
-import com.example.todoapp.ui.theme.MainBackgroundColor
-import com.example.todoapp.ui.theme.MainBlueColor
 import com.example.todoapp.ui.theme.ParagraphColor
-import com.example.todoapp.ui.theme.SpacerColor
-import com.example.todoapp.ui.theme.TODOAppTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -60,6 +48,22 @@ fun TaskList(
             .padding(vertical = 12.dp)
     ) {
         if(!viewModel.showSearch.value) {
+            if (homeUiState.value.taskList.isEmpty()) {
+                item {
+                    val option = viewModel.getOption()
+                    Column(
+                        modifier = Modifier.fillMaxWidth().fillParentMaxHeight(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        when(option) {
+                            "TO DO" -> Text(text = "No pending tasks", color = ParagraphColor)
+                            "PROGRESS" -> Text(text = "No tasks in progress", color = ParagraphColor)
+                            "DONE" -> Text(text = "No completed tasks", color = ParagraphColor)
+                        }
+                    }
+                }
+            }
             items(homeUiState.value.taskList.size) { taskIndex ->
                 if (viewModel.taskExtended == taskIndex) {
                     CardExtended(
@@ -222,7 +226,7 @@ fun CardExtended(
                         .clickable { onChangeClick(id) }
                 ) {
                     Text(
-                        text = "ALTERAR",
+                        text = "CHANGE",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSecondary

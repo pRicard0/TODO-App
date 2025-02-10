@@ -67,7 +67,7 @@ fun HomeTopBar(
                     .background(MaterialTheme.colorScheme.background)
             )
             Text(
-                text = "Projeto",
+                text = "TodoAPP",
                 style = Typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
